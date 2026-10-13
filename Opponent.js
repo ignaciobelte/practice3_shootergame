@@ -62,15 +62,21 @@ class Opponent extends Character {
     /**
      * Kill the opponent
      */
-    collide() { 
-        console.log("Opponent collide() was called!");   
+    collide() {  
+        console.log("Opponent collide() was called!");    
         if (!this.dead) {
+            // 1. Call super.collide() first to handle dead state and images
+            super.collide(); 
+            
+            // 2. Update score using this.game (NOT global 'game')
+            this.game.SCORE++; 
+            console.log("New score is: " + this.game.SCORE);
+
+            // 3. Wait 2 seconds, then remove/replace the opponent
             setTimeout(() => {
+                console.log("2 seconds passed, calling removeOpponent...");
                 this.game.removeOpponent();
             }, 2000);
-            super.collide();
-            game.SCORE++; 
-            console.log("New score is: " + game.SCORE);
         }
     }
 }
