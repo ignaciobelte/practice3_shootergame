@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 ## Practice with Classes, Booleans, Strings, and Event Handling
 
@@ -85,3 +86,6 @@ The assignment will be graded by adding the indicated percentage to the total sc
 - 25%: Correctly displays the user's score.
 - 50%: The final opponent functionality is implemented correctly.
 
+=======
+# practice3_shootergame
+>>>>>>> b31e1ac967267d449897a1f28c489b0790a9a0c7
