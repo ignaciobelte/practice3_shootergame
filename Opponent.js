@@ -3,7 +3,7 @@
  */
 class Opponent extends Character {
     /**
-     * @param game 
+     * @param game {Game} The instance of the game to which the opponent belongs
      */
     constructor (game) {
         const height = OPPONENT_HEIGHT * game.width / 100,
@@ -15,7 +15,7 @@ class Opponent extends Character {
             myImageDead = OPPONENT_PICTURE_DEAD;
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
-        this.direction = "R"; 
+        this.direction = "R"; // Direction in which the opponent is moving
         setTimeout(() => this.shoot(), 1000 + getRandomNumber(2500));
     }
 
@@ -54,7 +54,7 @@ class Opponent extends Character {
             this.horizontalMov -= this.speed;
             if (this.horizontalMov < this.speed) {
                 this.horizontalMov = getRandomNumber(this.game.width / 2);
-                this.direction = this.direction === "R" ? "L" : "R"; 
+                this.direction = this.direction === "R" ? "L" : "R"; // Change direction
             }
         }
     }
@@ -62,21 +62,15 @@ class Opponent extends Character {
     /**
      * Kill the opponent
      */
-    collide() {  
-        console.log("Opponent collide() was called!");    
+    collide() { 
+        console.log("Opponent collide() was called!");   
         if (!this.dead) {
-            
-            super.collide(); 
-            
-            
-            this.game.SCORE++; 
-            console.log("New score is: " + this.game.SCORE);
-
-            
             setTimeout(() => {
-                console.log("2 seconds passed, calling removeOpponent...");
                 this.game.removeOpponent();
             }, 2000);
+            super.collide();
+            game.SCORE++; 
+            console.log("New score is: " + game.SCORE);
         }
     }
 }

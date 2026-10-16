@@ -7,17 +7,17 @@ class Game {
      */
     constructor () {
         this.SCORE = 0;
-        this.started = false; 
-        this.ended = false; 
-        this.keyPressed = undefined; 
-        this.width = 0; 
-        this.height = 0; 
-        this.player = undefined; 
-        this.playerShots = [];
-        this.opponent = undefined;
-        this.opponentShots = []; 
-        this.xDown = null;
-        this.paused = false; 
+        this.started = false; // Indicates whether the game has started or not
+        this.ended = false; // Indicates whether the game has ended or not
+        this.keyPressed = undefined; // Indicates the key the user is pressing
+        this.width = 0; // Width of the game screen
+        this.height = 0; // Height of the game screen
+        this.player = undefined; // Instance of the main character in the game
+        this.playerShots = []; // Shots fired by the main character
+        this.opponent = undefined; // Instance of the opponent in the game
+        this.opponentShots = []; // Shots fired by the opponent
+        this.xDown = null; // Position where the user touched the screen
+        this.paused = false; // Indicates whether the game is paused
     }
 
 
@@ -26,7 +26,7 @@ class Game {
      */
     start () {
         if (!this.started) {
-            
+            // RequestAnimationFrame(this.update());
             window.addEventListener("keydown", (e) => this.checkKey(e, true));
             window.addEventListener("keyup", (e) => this.checkKey(e, false));
             window.addEventListener("touchstart", (e) => this.handleTouchStart(e, true));
@@ -61,8 +61,8 @@ class Game {
         }
     }
     /**
-    * 
-    * @param character 
+    * Adds a new shot to the game, either from the opponent or the main character
+    * @param character {Character} Character that is shooting
     */
 
     shoot (character) {
@@ -73,8 +73,8 @@ class Game {
     }
 
     /**
-    * 
-    * @param shot 
+    * Removes a shot from the game when it goes off-screen or the game ends
+    * @param shot {Shot} Shot to be removed
     */
 
     removeShot (shot) {
@@ -86,6 +86,9 @@ class Game {
         }
     }
 
+    /**
+     * Remove the opponent from the game
+     */
     removeOpponent() {
         const defeatedBoss = this.opponent instanceof Boss;
         this.opponent.remove();
@@ -97,25 +100,28 @@ class Game {
             this.opponent = new Boss(this);
         }
     }
- 
-    @param event 
-    @param isKeyDown 
+
+    /**
+    * Checks which key the user is pressing
+    * @param event {Event} Key up/pressed event
+    * @param isKeyDown {Boolean} Indicates whether the key is pressed (true) or not (false)
+    */
 
     checkKey (event, isKeyDown) {
         if (!isKeyDown) {
             this.keyPressed = undefined;
         } else {
             switch (event.keyCode) {
-            case 37:
+            case 37: // Left arrow
                 this.keyPressed = KEY_LEFT;
                 break;
-            case 32:
+            case 32: // Spacebar
                 this.keyPressed = KEY_SHOOT;
                 break;
-            case 39:
+            case 39: // Right arrow
                 this.keyPressed = KEY_RIGHT;
                 break;
-            case 27: case 81:
+            case 27: case 81: // ESC or Q key
                 this.pauseOrResume();
 
             }
@@ -123,9 +129,9 @@ class Game {
     }
 
     /**
-    * 
-    * @param evt 
-    * @returns {*}
+    * Checks the position on the screen that the user is touching
+    * @param evt {Event} Screen touch event
+    * @returns {*} Position on the screen that the user is touching
     */
 
     getTouches (evt) {
@@ -133,8 +139,8 @@ class Game {
     }
 
     /**
-    *
-    * @param evt 
+    * Handles the screen touch event
+    * @param evt {Event} Screen touch event
     */
 
     handleTouchStart (evt) {
@@ -145,7 +151,8 @@ class Game {
     }
 
     /**
-     @param evt 
+    * Handles the finger drag event on the screen
+    * @param evt {Event} Finger drag event on the screen
     */
 
     handleTouchMove (evt) {
@@ -155,17 +162,19 @@ class Game {
         const xUp = evt.touches[0].clientX,
             xDiff = this.xDown - xUp;
 
-        if (xDiff > MIN_TOUCHMOVE) { 
+        if (xDiff > MIN_TOUCHMOVE) { /* Left swipe */
             this.keyPressed = KEY_LEFT;
-        } else if (xDiff < -MIN_TOUCHMOVE) { 
+        } else if (xDiff < -MIN_TOUCHMOVE) { /* Right swipe */
             this.keyPressed = KEY_RIGHT;
         } else {
             this.keyPressed = KEY_SHOOT;
         }
-        this.xDown = null; 
+        this.xDown = null; /* Reset values */
     }
 
-    
+    /**
+    * Checks if the main character and the opponent have collided with each other or with the shots using the hasCollision method
+    */
 
     checkCollisions () {
         let impact = false;
@@ -187,15 +196,15 @@ class Game {
     }
 
    /**
-
-    * @param item1 
-    * @param item2 
-    * @returns {boolean}
+    * Checks if two game elements are colliding
+    * @param item1 {Entity} Game element 1
+    * @param item2 {Entity} Game element 2
+    * @returns {boolean} Returns true if they are colliding and false if not.
     */
 
    hasCollision (item1, item2) {
     if (item2 === undefined) {
-        return false; 
+        return false; // When opponent is undefined, there is no collision
     }
     const b1 = item1.y + item1.height,
         r1 = item1.x + item1.width,
@@ -209,6 +218,9 @@ class Game {
     return true;
 }
 
+    /**
+     * End the game
+     */
     endGame() {
         this.ended = true;
         clearInterval(this.timer);
