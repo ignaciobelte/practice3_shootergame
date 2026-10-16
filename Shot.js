@@ -1,11 +1,11 @@
 /**
- * Shot of a Character. Inherits from the Entity class
+ * 
  */
 class Shot extends Entity {
     /**
     * Initializes a shot
-    * @param game {Game} The instance of the game to which the character belongs
-     * @param character {Character} Game character that fires the shot
+    * @param game 
+     * @param character 
     */
 
     constructor (game, character) {
@@ -16,16 +16,16 @@ class Shot extends Entity {
         const speed = SHOT_SPEED;
         const myImage = character instanceof Player ? SHOT_PICTURE_PLAYER : SHOT_PICTURE_OPPONENT;
         super(game, width, height, x, y, speed, myImage);
-        this.type = character instanceof Player ? "PLAYER" : "ENEMY"; // Type of character that fires the shot
+        this.type = character instanceof Player ? "PLAYER" : "ENEMY"; 
     }
     /**
-     * Update the position attributes of the shot
+     * 
      */
     update () {
         if (this.type === "PLAYER") {
-            this.y = this.y - this.speed; // Goes up
+            this.y = this.y - this.speed; 
         } else {
-            this.y = this.y + this.speed; // Goes down
+            this.y = this.y + this.speed; 
         }
         if (this.y < 0 || this.y > this.game.height) {
             this.game.removeShot(this);

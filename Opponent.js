@@ -3,7 +3,7 @@
  */
 class Opponent extends Character {
     /**
-     * @param game {Game} The instance of the game to which the opponent belongs
+     * @param game 
      */
     constructor (game) {
         const height = OPPONENT_HEIGHT * game.width / 100,
@@ -15,7 +15,7 @@ class Opponent extends Character {
             myImageDead = OPPONENT_PICTURE_DEAD;
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
-        this.direction = "R"; // Direction in which the opponent is moving
+        this.direction = "R"; 
         setTimeout(() => this.shoot(), 1000 + getRandomNumber(2500));
     }
 
@@ -54,7 +54,7 @@ class Opponent extends Character {
             this.horizontalMov -= this.speed;
             if (this.horizontalMov < this.speed) {
                 this.horizontalMov = getRandomNumber(this.game.width / 2);
-                this.direction = this.direction === "R" ? "L" : "R"; // Change direction
+                this.direction = this.direction === "R" ? "L" : "R"; 
             }
         }
     }
@@ -65,14 +65,14 @@ class Opponent extends Character {
     collide() {  
         console.log("Opponent collide() was called!");    
         if (!this.dead) {
-            // 1. Call super.collide() first to handle dead state and images
+            
             super.collide(); 
             
-            // 2. Update score using this.game (NOT global 'game')
+            
             this.game.SCORE++; 
             console.log("New score is: " + this.game.SCORE);
 
-            // 3. Wait 2 seconds, then remove/replace the opponent
+            
             setTimeout(() => {
                 console.log("2 seconds passed, calling removeOpponent...");
                 this.game.removeOpponent();

@@ -5,7 +5,7 @@
 class Player extends Character {
     /**
     * Initializes a player
-    * @param game {Game} The instance of the game to which the player belongs
+    * @param game 
     */
 
     constructor (game) {
@@ -49,18 +49,18 @@ class Player extends Character {
      */
     collide() {
         if (!this.dead) {
-            // Decrease lives when hit
+            
             this.LIVES--;
 
             if (this.LIVES > 0) {
-                // If player still has lives, revive after 2 seconds
+                
                 setTimeout(() => {
-                    this.image.src = this.myImage; // Recover original image
+                    this.image.src = this.myImage; 
                     this.dead = false;
                 }, 2000);
-                super.collide(); // Sets dead = true and shows dead image temporarily
+                super.collide(); 
             } else {
-                // If no lives are left, die permanently and end game after 2 seconds
+                
                 setTimeout(() => {
                     this.game.endGame();
                 }, 2000);
