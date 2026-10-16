@@ -90,21 +90,14 @@ class Game {
      * Remove the opponent from the game
      */
     removeOpponent() {
-        try {
-            // If the current opponent is a standard Opponent and NOT already a Boss, spawn the Boss
-            if (this.opponent instanceof Opponent && !(this.opponent instanceof Boss)) {
-                console.log("Attempting to create a new Boss...");
-                this.opponent = new Boss(this);
-                console.log("Boss created successfully!");
-            } else {
-                // If the Boss was defeated, remove it and check if the player won
-                this.opponent = undefined;
-                if (this.player.LIVES > 0) {
-                    this.endGame();
-                }
-            }
-        } catch (error) {
-            console.error("ERROR spawning the Boss:", error);
+        const defeatedBoss = this.opponent instanceof Boss;
+        this.opponent.remove();
+
+        if (defeatedBoss) {
+            this.opponent = undefined;
+            this.endGame();
+        } else {
+            this.opponent = new Boss(this);
         }
     }
 
@@ -230,19 +223,22 @@ class Game {
      */
     endGame() {
         this.ended = true;
-        
-        // Determine which image to show based on player lives
-        let endImageSrc = "assets/game_over.png";
-        if (this.player.LIVES > 0) {
-            endImageSrc = "assets/you_win.png";
-        }
+        clearInterval(this.timer);
 
-        // Draw or display the ending image on the canvas/screen
-        let img = new Image();
-        img.src = endImageSrc;
-        img.onload = () => {
-            this.ctx.drawImage(img, this.canvas.width / 2 - 150, this.canvas.height / 2 - 100, 300, 200);
-        };
+        const endImageSrc = this.player.LIVES > 0
+            ? "assets/you_win.png"
+            : "assets/game_over.png";
+        const imageWidth = Math.min(300, this.width);
+
+        new Entity(
+            this,
+            imageWidth,
+            "auto",
+            (this.width - imageWidth) / 2,
+            Math.max(0, this.height / 2 - 100),
+            0,
+            endImageSrc
+        );
     }
 
     /**
